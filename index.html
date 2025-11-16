@@ -1,99 +1,63 @@
 <!doctype html>
 <html>
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Customer Form</title>
-
 <style>
 body{font-family:Arial;background:#f5f7fb;margin:0;padding:20px}
 .card{max-width:450px;margin:40px auto;background:#fff;padding:22px;border-radius:12px;
-      box-shadow:0 4px 20px rgba(0,0,0,0.1)}
+box-shadow:0 4px 20px rgba(0,0,0,0.1)}
 label{display:block;margin-top:12px;font-weight:600}
-input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #ddd;
-             border-radius:8px;font-size:15px;box-sizing:border-box}
-button{margin-top:16px;width:100%;background:#2563eb;color:#fff;padding:12px;font-size:16px;
-       font-weight:600;border:none;border-radius:8px;cursor:pointer}
+input,select{width:100%;padding:12px;margin-top:6px;border:1px solid #ddd;border-radius:8px;font-size:15px}
+button{margin-top:16px;width:100%;background:#2563eb;color:#fff;padding:12px;font-size:16px;border:none;border-radius:8px;cursor:pointer}
 .msg{margin-top:12px;font-weight:600}
 .success{color:#059669}.error{color:#dc2626}
 </style>
 </head>
-
 <body>
 <div class="card">
   <h2>Customer Details</h2>
-
-  <!-- IMPORTANT: This submits directly to Google Apps Script -->
-  <form id="custForm" method="POST" 
-        action="https://script.google.com/macros/s/AKfycbxPCvWE1Rp5CeBWLCoTrA_7qGyn0pkx2tpi1ztjuXdbJkINyb1vNu1pFzMMC0WArCma-A/exec"
+  <form id="custForm" method="POST"
+        action="https://script.google.com/macros/s/AKfycbx0YEHVo-jmc0NxlsoZoWRgAP6y04dtXs-al6PETPQ1vujsqfH-3m8k2ECkImcGxMSsvA/exec"
         target="hidden_iframe">
-
     <label>Name</label>
     <input type="text" name="name" id="name" required>
-
     <label>Phone</label>
     <input type="tel" name="phone" id="phone" required>
-
     <label>Branch</label>
     <select name="branch" id="branch">
       <option value="">Select Branch</option>
-      <option>MUMBAI</option>
-      <option>DELHI</option>
-      <option>SURAT</option>
-      <option>PUNE</option>
-      <option>AHMEDABAD</option>
-      <option>AURANGABAD</option>
-      <option>BELGAUM</option>
-      <option>HYDERABAD</option>
-      <option>LUCKNOW</option>
-      <option>BHOPAL</option>
+      <option>MUMBAI</option><option>DELHI</option><option>SURAT</option><option>PUNE</option>
+      <option>AHMEDABAD</option><option>AURANGABAD</option><option>BELGAUM</option><option>HYDERABAD</option>
+      <option>LUCKNOW</option><option>BHOPAL</option>
     </select>
-
-    <!-- For URL branch override -->
     <input type="hidden" id="branchHidden" name="branch">
-
     <button type="submit">Save</button>
   </form>
-
   <div id="msg" class="msg"></div>
 </div>
-
-<!-- hidden iframe to catch response -->
-<iframe name="hidden_iframe" style="display:none;"></iframe>
-
+<iframe name="hidden_iframe" style="display:none"></iframe>
 <script>
-// auto-branch from URL ?branch=MUMBAI
 const p = new URLSearchParams(window.location.search).get('branch');
 const branchSelect = document.getElementById('branch');
 const branchHidden = document.getElementById('branchHidden');
-
 if(p){
   branchHidden.value = p;
-  for(const opt of branchSelect.options){
-    if(opt.value.toLowerCase() === p.toLowerCase()) opt.selected = true;
-  }
+  for(const opt of branchSelect.options){ if(opt.value.toLowerCase()===p.toLowerCase()) opt.selected=true; }
   branchSelect.disabled = true;
 }else{
-  branchSelect.addEventListener('change',()=>branchHidden.value=branchSelect.value);
+  branchSelect.addEventListener('change', ()=> branchHidden.value = branchSelect.value);
 }
-
-// set default
 branchHidden.value = branchSelect.value;
-
-// After submit -> success message
 document.querySelector("iframe").addEventListener("load", ()=>{
-  document.getElementById("msg").textContent="Saved successfully!";
-  document.getElementById("msg").className="msg success";
+  document.getElementById("msg").textContent = "Saved successfully!";
+  document.getElementById("msg").className = "msg success";
   document.getElementById("custForm").reset();
-  if(p){
-    branchHidden.value=p;
-    branchSelect.disabled=true;
-  }
+  if(p){ branchHidden.value = p; branchSelect.disabled = true; }
 });
 </script>
-
 </body>
 </html>
+
 
 
 
