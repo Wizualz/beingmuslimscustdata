@@ -16,45 +16,38 @@
   --border-light: #e7e0d4;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0}
+html{height:100%} /* Use min-height on body */
 body{
+  min-height: 100vh; /* Ensures full height */
+  margin: 0;
   background: var(--bg); /* Fallback color */
   font-family:"Cairo",system-ui,-apple-system,Segoe UI,Roboto,Arial;
   color:var(--ink);
-  display:flex;align-items:center;justify-content:center;padding:28px;
+  display:flex;align-items:center;justify-content:center;
+  padding: 16px; /* REDUCED padding for mobile */
   
-  /* UPDATED: Multiple background images */
   background-image: 
-    /* Top Layer: Arabic Pattern (rgba(183, 138, 40, 0.03) = --gold at 3% opacity) */
     url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="rgba(183, 138, 40, 0.03)" d="M0 0h50v50H0zm50 50h50v50H50zM25 0h50v25H25zm0 75h50v25H25zm-25 25h25v-50H0zm75-50h25v-50H75zM0 50h25v-25H0zm75 25h25v-25H75zM50 0h25v25H50zM25 50h25v25H25zM50 75h25v25H50zM75 0h25v25H75zM0 75h25v25H0zM50 25h25v25H50zM25 25h25v25H25zM75 50h25v25H75z"/></svg>'),
-    /* Bottom Layer: Gradient */
     linear-gradient(175deg, var(--bg) 0%, #ffffff 100%);
-  
-  background-size: 150px, auto; /* Size for pattern, default for gradient */
-  background-repeat: repeat, no-repeat; /* Repeat pattern, don't repeat gradient */
+  background-size: 150px, auto;
+  background-repeat: repeat, no-repeat;
 }
 
 .container{
   width:100%;
   max-width:1000px;
-  margin: 20px auto;
+  margin: 0 auto; /* Centered with no vertical margin */
   background: var(--panel);
-  border-radius: 24px;
+  border-radius: 16px; /* SMALLER radius for mobile */
   border: 1px solid rgba(183,138,40,0.15);
-  box-shadow: 0 25px 80px rgba(100, 70, 20, 0.12);
+  box-shadow: 0 20px 60px rgba(100, 70, 20, 0.1); /* TWEAKED shadow */
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr; /* Default to 1 column (mobile-first) */
   overflow: hidden;
 }
 
-@media (min-width: 800px) {
-  .container {
-    grid-template-columns: 4fr 6fr; /* 40% brand, 60% form */
-  }
-}
-
 .brand-panel {
-  padding: 40px;
+  padding: 28px; /* REDUCED padding for mobile */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -63,13 +56,6 @@ body{
   background-color: var(--bg);
   position: relative;
   border-bottom: 1px solid var(--border-light);
-}
-@media (min-width: 800px) {
-  .brand-panel {
-    border-bottom: 0;
-    border-right: 1px solid var(--border-light);
-    padding: 48px;
-  }
 }
 
 .brand-panel::before {
@@ -83,30 +69,29 @@ body{
 }
 
 .brand-logo {
-  width: 180px; /* Adjusted size */
-  height: 180px; /* Adjusted size */
+  width: 150px; /* REDUCED size for mobile */
+  height: 150px; /* REDUCED size for mobile */
   object-fit: contain;
   display: block;
-  /* REMOVED: border-radius, border, background, box-shadow */
-  background: none; /* Make background transparent */
-  border-radius: 0; /* No border radius */
-  border: none; /* No border */
-  box-shadow: none; /* No shadow */
+  background: none;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
   position: relative;
   z-index: 2;
-  margin-bottom: 24px;
+  margin-bottom: 20px; /* REDUCED margin */
 }
 
 .brand-panel .headline {
   font-family:"Playfair Display",serif;
-  font-size: 34px;
+  font-size: 28px; /* REDUCED font size for mobile */
   margin: 0 0 8px;
   color:var(--gold);
   position: relative;
   z-index: 2;
 }
 .brand-panel .subtitle {
-  font-size: 16px;
+  font-size: 15px; /* REDUCED font size for mobile */
   color: var(--muted);
   margin: 0;
   max-width: 300px;
@@ -116,22 +101,17 @@ body{
 }
 
 .form-panel {
-  padding: 40px;
+  padding: 28px; /* REDUCED padding for mobile */
   text-align: left;
   position: relative;
-}
-@media (min-width: 800px) {
-  .form-panel {
-    padding: 48px;
-  }
 }
 
 .form-panel h2 {
   font-family:"Playfair Display",serif;
-  font-size: 28px;
+  font-size: 24px; /* REDUCED font size for mobile */
   margin: 0 0 24px;
   color: var(--ink);
-  text-align: center; /* Centered the heading */
+  text-align: center;
 }
 
 form{
@@ -188,9 +168,7 @@ input:focus, select:focus {
   box-shadow: 0 16px 35px rgba(183, 138, 40, 0.25);
 }
 .btn[disabled]{
-  opacity:.6;
-  cursor:wait;
-  transform: none;
+  opacity:.6;cursor:wait;transform: none;
   box-shadow: 0 12px 30px rgba(183, 138, 40, 0.2);
 }
 
@@ -200,6 +178,45 @@ input:focus, select:focus {
 .modal p{margin:12px 0 0;color:#444;font-size:16px}
 .modal .ok{margin-top:18px;padding:12px 18px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--gold),var(--gold-2));font-weight:800;color:white;cursor:pointer}
 .toast{position:fixed;right:20px;bottom:20px;background:#111;color:#fff;padding:10px 12px;border-radius:10px;display:none;z-index:300}
+
+
+/* --- RESPONSIVE BREAKPOINT --- */
+/* For tablets (portrait) and larger */
+@media (min-width: 800px) {
+  .container {
+    grid-template-columns: 4fr 6fr; /* 2-column layout */
+    border-radius: 24px; /* LARGER radius for desktop */
+    box-shadow: 0 25px 80px rgba(100, 70, 20, 0.12);
+  }
+
+  .brand-panel {
+    border-bottom: 0; /* Remove border */
+    border-right: 1px solid var(--border-light); /* Add side border */
+    padding: 48px; /* LARGER padding for desktop */
+  }
+
+  .brand-logo {
+    width: 180px; /* LARGER logo for desktop */
+    height: 180px; /* LARGER logo for desktop */
+    margin-bottom: 24px;
+  }
+
+  .brand-panel .headline {
+    font-size: 34px; /* LARGER font for desktop */
+  }
+  .brand-panel .subtitle {
+    font-size: 16px; /* LARGER font for desktop */
+  }
+
+  .form-panel {
+    padding: 48px; /* LARGER padding for desktop */
+  }
+
+  .form-panel h2 {
+    font-size: 28px; /* LARGER font for desktop */
+  }
+}
+
 </style>
 </head>
 <body>
@@ -356,7 +373,7 @@ input:focus, select:focus {
     }
   });
 
-  // Logo load debug - JAVASCRIPT MESSAGE UPDATED
+  // Logo load debug
   const logoImg = document.getElementById('brandLogo');
   logoImg.addEventListener('error', ()=> { 
     console.warn('Logo failed to load from CDN.'); 
