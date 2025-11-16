@@ -1,9 +1,288 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>My First GitHub Website</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BEINGMUSLIMS — Store Branches</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #0d0b09;
+  --card: rgba(255, 215, 130, 0.05);
+  --accent: #f2c572;
+  --gold-gradient: linear-gradient(90deg, #f9e7b0, #e3b356, #f9e7b0);
+  --text-muted: #c1b394;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: #fff;
+  background-image: 
+    url('https://www.transparenttextures.com/patterns/arabesque.png'),
+    radial-gradient(circle at 20% 30%, rgba(255,215,130,0.07) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,215,130,0.07) 0%, transparent 40%);
+  background-blend-mode: overlay;
+  background-size: 400px, cover, cover;
+  overflow-x: hidden;
+}
+.container {
+  max-width: 1100px;
+  margin: 50px auto;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255,215,130,0.15);
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255,215,130,0.05);
+  backdrop-filter: blur(10px);
+}
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+}
+header img {
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  background: white;
+  padding: 8px;
+  box-shadow: 0 0 25px rgba(255,215,130,0.4);
+}
+.brand h1 {
+  font-family: "Amiri", serif;
+  font-size: 26px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.brand p {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.city-section {
+  margin-top: 40px;
+}
+.city-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,215,130,0.25);
+}
+.city-title .en {
+  font-family: "Poppins", sans-serif;
+  font-size: 22px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.city-title .ur {
+  font-family: "Amiri", serif;
+  font-size: 22px;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  color: transparent;
+  direction: rtl;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 20px;
+}
+.card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid rgba(255,215,130,0.15);
+  border-radius: 16px;
+  padding: 18px;
+  transition: 0.4s ease;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: var(--gold-gradient);
+  opacity: 0.6;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px rgba(255,215,130,0.4);
+}
+.address {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #f7f3e8;
+  white-space: pre-line;
+}
+.meta {
+  margin-top: 8px;
+}
+.chip {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(255,215,130,0.08);
+  border: 1px solid rgba(255,215,130,0.25);
+  font-size: 13px;
+  color: #f5e2b6;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+a.phone, a.map {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+a.phone {
+  color: #fff;
+  border: 1px solid rgba(255,215,130,0.2);
+  background: rgba(255,215,130,0.08);
+}
+a.phone:hover {
+  background: rgba(255,215,130,0.2);
+}
+a.map {
+  color: var(--accent);
+  border: 1px dashed rgba(255,215,130,0.3);
+}
+a.map:hover {
+  color: #fff;
+  border-color: var(--accent);
+  background: rgba(255,215,130,0.15);
+}
+footer {
+  text-align: center;
+  margin-top: 50px;
+  color: var(--text-muted);
+  font-size: 13px;
+  border-top: 1px solid rgba(255,215,130,0.15);
+  padding-top: 15px;
+}
+</style>
 </head>
 <body>
-  <h1>Hello! This is my website on GitHub Pages.</h1>
+
+<div class="container">
+  <header>
+    <img src="https://cdn.shopify.com/s/files/1/0617/3255/2841/files/bm_logo.png?v=1757573120" alt="BM Logo">
+    <div class="brand">
+      <h1>BEINGMUSLIMS — The Hijab Shoppe</h1>
+      <p>Mumbai • Delhi • Surat • Pune • Hyderabad • Ahmedabad • Aurangabad • Lucknow • Belgaum • Bhopal</p>
+    </div>
+  </header>
+
+  <div id="branchesArea"></div>
+</div>
+
+<footer>
+  © 2025 BEINGMUSLIMS — All Rights Reserved | Designed with ✨ by BEINGMUSLIMS
+</footer>
+
+<script>
+const urduNames = {
+  'MUMBAI':'ممبئی',
+  'DELHI':'دہلی',
+  'SURAT':'سورت',
+  'PUNE':'پونے',
+  'BELGAUM':'بلگاوں',
+  'AHMEDABAD':'احمد آباد',
+  'HYDERABAD':'حیدرآباد',
+  'AURANGABAD':'اورنگ آباد',
+  'LUCKNOW':'لکھنؤ',
+  'BHOPAL':'بھوپال'
+};
+
+const branches = {
+  'MUMBAI':[ 
+    {title:'Ground Floor, 30, Next to Al Sadiq ENT Hospital, Opposite Chuna Bhatti Masjid, Mumbai, Maharashtra', phone:'+918928805501'},
+    {title:'1/14, Ground Floor, Development Bank Building, Mata Ramabai Ambedkar Marg, Mumbai, Maharashtra', phone:'+918433991785'},
+    {title:'Ground Floor, Habib House, 97 Memomwada Street, Behind Noor Hospital, Mumbai, Maharashtra', phone:'+919799796993'}],
+  'DELHI':[ 
+    {title:'Shop Number 3941, Urdu Bazar Road, Jama Masjid, Old Delhi, Delhi, 110006', phone:'+919625545424'},
+    {title:'Shop no-161/22, Main Market Joga Bai, Makkah Palace Hotel, Batla House, Okhla, New Delhi -110025', phone:'+919891269822'},
+    {title:'THE HIJAB HOUSE | MODEST FOREVER\nAddress: Shop No.E-334/5 Batla House Chowk, Okhla, Delhi, 110025', phone:'+918375903870', map:'https://shorturl.at/GffSr'}],
+  'SURAT':[ 
+    {title:'Salabatpura Mumnawad, Near Badi Masjid, Opp. Dusra Taziya, Surat, Gujarat 395003', phone:'+917600267402'},
+    {title:'Chowk Bazar, Kamal Gali, Main Road, Opp. Jama Masjid, Surat, Gujarat 395003', phone:'+917600267402'}],
+  'PUNE':[ 
+    {title:'370, Centre Street, Opp. Kalidas Gandhi, Near Kolsa Galli, Camp, Pune, Maharashtra 411001', phone:'+919823393733'}],
+  'BELGAUM':[ 
+    {title:'Shop No. Hyderabad Collection, 3306, Bhendi Bazar, Raviwar Peth, Belagavi, Karnataka 590001', phone:'+919591231375'}],
+  'AHMEDABAD':[ 
+    {title:'3 Darwaza, Near Khajuri Masjid, Dhalgarwad, Ahmedabad, Gujarat 380001', phone:'+919023987386'}],
+  'HYDERABAD':[ 
+    {title:'20-4-231, Mahboob Chowk, Khilwat, Hyderabad, Telangana 500002', phone:'+919310168807'}],
+  'AURANGABAD':[ 
+    {title:'Shop No. 2, Hafeez Tower, Opposite Masjid E Kalaha Shahgunj, Near Clock Tower, Shahgunj, Chhatrapati Sambhajinagar (Aurangabad), Maharashtra 431001', phone:'+919404894048'}],
+  'LUCKNOW':[ 
+    {title:'Shop No. 178, Victoria Street, Opposite Shia Girls College, Bajaja Nakhas Chowk, Lucknow, Uttar Pradesh 226003', phone:'+917080553240'}],
+  'BHOPAL':[ 
+    {title:'BEING MUSLIMS | MODEST FOREVER\nGalaxy Plaza, New Motia Park, Sultania Rd,\nIbrahimpura, Bhopal, Madhya Pradesh 462001', phone:'+918839478744', map:'https://shorturl.at/MQI0Z'}]
+};
+
+function mkMapUrl(addr, custom){
+  return custom || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr));
+}
+
+function render(){
+  const area=document.getElementById('branchesArea');
+  area.innerHTML='';
+  for(const city in branches){
+    const sec=document.createElement('section');
+    sec.className='city-section';
+    const h=document.createElement('div');
+    h.className='city-title';
+    h.innerHTML = `<span class="en">${city}</span><span class="ur">${urduNames[city]}</span>`;
+    sec.appendChild(h);
+    const grid=document.createElement('div');
+    grid.className='grid';
+    branches[city].forEach(b=>{
+      const card=document.createElement('article');
+      card.className='card';
+      const mapUrl=mkMapUrl(city+' '+b.title,b.map);
+      card.innerHTML=`
+        <div class="address">${b.title}</div>
+        <div class="meta">${b.phone?`<div class='chip'>📞 ${b.phone}</div>`:''}</div>
+        <div class="actions">
+          ${b.phone?`<a class='phone' href='tel:${b.phone}'>Call Store</a>`:''}
+          ${b.title!=='Coming Soon'?`<a class='map' href='${mapUrl}' target='_blank'>🗺️ View on Map</a>`:''}
+        </div>`;
+      grid.appendChild(card);
+    });
+    sec.appendChild(grid);
+    area.appendChild(sec);
+  }
+}
+render();
+</script>
+
 </body>
 </html>
+
