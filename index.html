@@ -1,148 +1,99 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Customer - Save to Google Sheet</title>
+<title>Customer Form - fallback (form POST)</title>
 <style>
-  :root{--bg:#f5f7fb;--card:#ffffff;--accent:#2563eb}
-  body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg);color:#111}
-  .wrap{max-width:520px;margin:40px auto;padding:20px}
-  .card{background:var(--card);border-radius:12px;padding:22px;box-shadow:0 6px 30px rgba(16,24,40,.08)}
-  h1{margin:0 0 8px;font-size:20px}
-  p.sub{margin:0 0 18px;color:#475569;font-size:14px}
-  label{display:block;font-weight:600;margin-top:12px;font-size:13px}
-  input[type="text"], input[type="tel"], select{
-    width:100%;padding:12px 10px;margin-top:8px;border:1px solid #e6eef6;border-radius:8px;box-sizing:border-box;font-size:15px
-  }
-  button{margin-top:16px;background:var(--accent);color:#fff;padding:12px 14px;border:none;border-radius:10px;font-weight:700;cursor:pointer;width:100%;font-size:15px}
+  body{font-family:Arial;background:#f5f7fb;padding:24px}
+  .card{max-width:520px;margin:24px auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 6px 20px rgba(16,24,40,.06)}
+  input, select{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #e6eef6;box-sizing:border-box}
+  button{margin-top:12px;width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:700}
   .msg{margin-top:12px;font-weight:600}
-  .success{color:#059669}
-  .error{color:#dc2626}
-  .small{font-size:13px;color:#475569;margin-top:10px}
-  footer{margin-top:16px;text-align:center;color:#64748b;font-size:13px}
-  @media (max-width:420px){.wrap{margin:18px;padding:12px}.card{padding:16px}}
+  .success{color:#059669} .error{color:#dc2626}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Customer Details</h1>
-      <p class="sub">Name aur phone daalein. Branch agar URL se aayega toh woh auto-set ho jayega.</p>
+  <div class="card">
+    <h2>Customer Details</h2>
+    <form id="theForm" method="POST" action="https://script.google.com/macros/s/AKfycbxPCvWE1Rp5CeBWLCoTrA_7qGyn0pkx2tpi1ztjuXdbJkINyb1vNu1pFzMMC0WArCma-A/exec" target="hidden_iframe">
+      <label>Name</label>
+      <input name="name" id="name" type="text" required placeholder="Full name" />
+      <label>Phone</label>
+      <input name="phone" id="phone" type="tel" required placeholder="9876543210" />
+      <label>Branch</label>
+      <select name="branch" id="branch">
+        <option value="">-- Select branch --</option>
+        <option>MUMBAI</option><option>DELHI</option><option>SURAT</option><option>PUNE</option>
+        <option>AHMEDABAD</option><option>AURANGABAD</option><option>BELGAUM</option><option>HYDERABAD</option>
+        <option>LUCKNOW</option><option>BHOPAL</option>
+      </select>
 
-      <form id="custForm" autocomplete="off">
-        <label for="name">Name</label>
-        <input id="name" name="name" type="text" placeholder="Full name" required />
+      <input type="hidden" id="branchHidden" name="branch" />
+      <button type="submit">Save</button>
+    </form>
 
-        <label for="phone">Phone</label>
-        <input id="phone" name="phone" type="tel" placeholder="eg. 9876543210" required pattern="[0-9+()\- ]{6,}" />
-
-        <label for="branch">Branch</label>
-        <select id="branch" name="branch" required>
-          <option value="">-- Select branch --</option>
-          <option>MUMBAI</option>
-          <option>DELHI</option>
-          <option>SURAT</option>
-          <option>PUNE</option>
-          <option>AHMEDABAD</option>
-          <option>AURANGABAD</option>
-          <option>BELGAUM</option>
-          <option>HYDERABAD</option>
-          <option>LUCKNOW</option>
-          <option>BHOPAL</option>
-        </select>
-
-        <button type="submit">Save</button>
-      </form>
-
-      <div id="msg" class="msg" role="status" aria-live="polite"></div>
-      <div class="small">Tip: Agar aap chahte ho branch-specific link use karna — use `...?branch=MUMBAI` in the URL.</div>
-    </div>
-
-    <footer>Made quick — submit will save to your Google Sheet</footer>
+    <div id="msg" class="msg" role="status" aria-live="polite"></div>
+    <p style="font-size:13px;color:#64748b;margin-top:8px">Tip: use ?branch=MUMBAI in URL to auto-fill branch.</p>
   </div>
 
+  <!-- hidden iframe to receive response so page doesn't redirect -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
 <script>
-/* ====== CONFIG: put your Apps Script Web App URL here (already filled) ====== */
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxPCvWE1Rp5CeBWLCoTrA_7qGyn0pkx2tpi1ztjuXdbJkINyb1vNu1pFzMMC0WArCma-A/exec";
-/* ======================================================================= */
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const branchParam = (params.get('branch') || '').trim();
+  const branchSelect = document.getElementById('branch');
+  const branchHidden = document.getElementById('branchHidden');
+  const msg = document.getElementById('msg');
 
-const form = document.getElementById('custForm');
-const msgEl = document.getElementById('msg');
-const branchEl = document.getElementById('branch');
-
-function getQueryParam(name){
-  return new URLSearchParams(window.location.search).get(name) || '';
-}
-
-// If branch param present -> set and disable dropdown (so staff can't change accidentally)
-const branchParam = getQueryParam('branch').trim();
-if(branchParam){
-  // try to match option (case-insensitive). If not found, create and select.
-  let found = false;
-  for(const opt of branchEl.options){
-    if(opt.value && opt.value.toLowerCase() === branchParam.toLowerCase()){
-      opt.selected = true; found = true; break;
+  // if URL param present, set hidden field and disable select
+  if(branchParam){
+    branchHidden.value = branchParam;
+    // try select matching option if exists
+    for(const opt of branchSelect.options){
+      if(opt.value && opt.value.toLowerCase() === branchParam.toLowerCase()){
+        opt.selected = true; break;
+      }
     }
-  }
-  if(!found){
-    const opt = document.createElement('option');
-    opt.value = branchParam;
-    opt.text = branchParam;
-    opt.selected = true;
-    branchEl.appendChild(opt);
-  }
-  branchEl.disabled = true;
-}
-
-function showMessage(text, type){
-  msgEl.textContent = text;
-  msgEl.className = 'msg ' + (type === 'success' ? 'success' : 'error');
-}
-
-form.addEventListener('submit', async function(e){
-  e.preventDefault();
-  showMessage('', '');
-  const name = document.getElementById('name').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const branch = document.getElementById('branch').value.trim();
-
-  if(!name || !phone){
-    showMessage('Name aur phone dono bharein.', 'error'); return;
+    branchSelect.disabled = true;
+  } else {
+    // if not passed, copy select value into hidden before submit
+    branchSelect.addEventListener('change', () => branchHidden.value = branchSelect.value);
   }
 
-  // optional: simple phone normalization
-  const phoneDigits = phone.replace(/[^\d+]/g,'');
+  // set hidden on load in case select default
+  branchHidden.value = branchSelect.value;
 
-  const payload = { name, phone: phoneDigits, branch };
+  // when iframe loads after submit, show success (we can't read body due cross-origin)
+  const iframe = document.getElementById('hidden_iframe');
+  iframe.addEventListener('load', function(){
+    // small delay to allow server response to finish
+    setTimeout(()=> {
+      msg.textContent = 'Submission received — check Google Sheet.'; 
+      msg.className = 'msg success';
+    }, 150);
+  });
 
-  try{
-    const res = await fetch(WEB_APP_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    // Try parse JSON safely
-    let data = null;
-    try{ data = await res.json(); } catch(err){ data = null; }
-    if(res.ok && data && data.status === 'success'){
-      showMessage('Saved — thank you!', 'success');
-      form.reset();
-      // reassign branch param if present
-      if(branchParam){ branchEl.value = branchParam; branchEl.disabled = true; }
-    } else {
-      // show helpful message
-      const serverMsg = data && data.message ? data.message : 'Server error or invalid response';
-      showMessage('Error: ' + serverMsg, 'error');
-      console.error('Server response', res.status, data);
+  // show error if form fields invalid
+  document.getElementById('theForm').addEventListener('submit', function(e){
+    msg.textContent = ''; msg.className = 'msg';
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    if(!name || !phone){
+      e.preventDefault();
+      msg.textContent = 'Please fill name and phone.'; msg.className = 'msg error';
+      return false;
     }
-  } catch(err){
-    showMessage('Network error: ' + err.message, 'error');
-    console.error(err);
-  }
-});
+    // set hidden branch from select (in case)
+    branchHidden.value = branchSelect.value;
+    // allow submit to proceed
+  });
+})();
 </script>
 </body>
 </html>
+
 
 
